@@ -4,7 +4,7 @@ errecho() {
     # echo to stderr
     # Usage: errecho "string"
 
-    >&2 echo "${1//$'\n'/}"
+    >&2 echo "${@//$'\n'/}"
 }
 
 function isIPv4() {
