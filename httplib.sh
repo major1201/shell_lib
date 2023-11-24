@@ -52,6 +52,10 @@ setData() {
     DATA=$1
 }
 
+setDataFile() {
+    DATA=$(envsubst < "$1")
+}
+
 
 # ---------------------------------------------
 # curl implementation
@@ -109,7 +113,7 @@ curl::setQueryParam() {
 
 httpie::doReq() {
     declare -a CMD
-    CMD+=("${HTTPIE_BIN}" "${METHOD}" "${LOCATION}")
+    CMD+=("${HTTPIE_BIN}" --ignore-stdin "${METHOD}" "${LOCATION}")
     for key in "${!HEADERS[@]}"; do
         CMD+=("${key}:${HEADERS[${key}]}")
     done
