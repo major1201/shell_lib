@@ -94,3 +94,15 @@ function macFindFreePort() {
         <(sudo lsof -nP -i | grep LISTEN | awk '{print $9}' | awk -F: '{print $NF}' | sort -n | uniq) \
         | shuf | head -n1
 }
+
+function arrayContains() {
+    # Usage: arrayContains key expandedKeys...
+    local key=$1
+    shift
+    for o in "$@"; do
+        if [[ "$o" == "${key}" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
