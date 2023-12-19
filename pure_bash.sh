@@ -124,13 +124,15 @@ cycle() {
     ((i=i>=${#arr[@]}-1?0:++i))
 }
 
-head() {
+head_alt() {
+    # Alternative to the head command.
     # Usage: head "n" "file"
     mapfile -tn "$1" line < "$2"
     printf '%s\n' "${line[@]}"
 }
 
-tail() {
+tail_alt() {
+    # Alternative to the tail command.
     # Usage: tail "n" "file"
     mapfile -tn 0 line < "$2"
     printf '%s\n' "${line[@]: -$1}"
