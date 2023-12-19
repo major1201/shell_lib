@@ -97,6 +97,7 @@ function macFindFreePort() {
 
 function arrayContains() {
     # Usage: arrayContains key expandedKeys...
+
     local key=$1
     shift
     for o in "$@"; do
@@ -105,4 +106,32 @@ function arrayContains() {
         fi
     done
     return 1
+}
+
+mkpool() {
+    # Usage: mkpool fifo_file pool_size
+
+    local fifo_file=$1
+    local pool_size=$2
+
+    mkfifo "${fifo_file}"
+    exec 1000<> "${fifo_file}"
+    rm -rf "${fifo_file}"
+
+    for (( i=0; i < pool_size; i++ )) do
+        echo >&1000
+    done
+}
+
+go() {
+    # Usage: run job background in a pool, please use this with `mkpool`
+
+    fifo_file=$1
+    shift
+
+    read -r -u 1000
+    {
+        "$@" || true
+        echo >&1000
+    } &
 }
